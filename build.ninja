@@ -1,0 +1,27 @@
+CC = clang
+
+
+pool local_pool
+ depth = 2
+
+rule rule0
+ description = build $out
+ command = $CC main.c -O3 -flto -I. -o genvulkancode
+build release: rule0
+
+rule rule1
+ description = build $out
+ command = $CC -g main.c -I. -o genvulkancode
+build debug: rule1
+
+rule rule2
+ description = run $out
+ command = tcc -run -I. main.c
+build run: rule2
+
+rule remove
+ description = clean up
+ command = rm genvulkancode
+build clean: remove
+
+default debug
